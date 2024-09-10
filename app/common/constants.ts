@@ -808,9 +808,11 @@ export const ACTIVEPROJECT_CONFIG: ActiveProjectRow = {
   },
   workflow: {
     columnNum: "G",
-    type: QuestionType.INPUT,
+    type: QuestionType.SELECTOR,
     disabled: true,
     label: "Work Flow",
+    options: getWorkFlowOptions(),
+    width: "400px",
   },
   tasksubtype: {
     columnNum: "H",
@@ -886,6 +888,7 @@ export const ADD_ACTIVEPROJECT_CONFIG: ActiveProjectRow = {
     type: QuestionType.INPUT,
     disabled: false,
     label: "Work Flow",
+    width: "400px",
   },
   tasksubtype: {
     columnNum: "H",
