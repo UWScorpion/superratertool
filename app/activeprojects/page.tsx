@@ -22,11 +22,14 @@ import {
   QTYPE_CONFIG,
   Topprojectfilter,
   WORKFLOWFILTER_CONFIG,
-  ChangeHistory
+  ChangeHistory,
+  Cell
 } from "../common/constants";
-import { titleToNumber, getRowNumber, getOptions, formatDate} from "../common/utils";
+import { titleToNumber, getRowNumber, getOptions, formatDate, convertActiveProjectRowToArrayExcludeId} from "../common/utils";
 import loading from "../../public/loading.gif";
 import Addprojectrow from "../components/Addprojectrow";
+import { CSVLink } from "react-csv";
+import { IoCloudDownloadOutline } from "react-icons/io5";
 
 const Activeprojects = () => {
   const [dataWithFilter, setDataWithFilter] = useState(
@@ -36,6 +39,7 @@ const Activeprojects = () => {
   const [offset, setOffset] = useState(0);
   const [saveValues, setSaveValues] = useState(false);
   const [updates, setUpdates] = useState({} as Record);
+  const [csvData, setCsvData] = useState([] as string[][]);
   const [topprojectfilterconfig, setTopprojectfilterconfig] = useState([
     PROJECT_TAB_CONFIG[0],
     WORKFLOWFILTER_CONFIG,
@@ -325,6 +329,28 @@ const Activeprojects = () => {
     }
     setOffset(offset + nextPage);
   };
+  const handleDownload = () => {
+    const rows = [...dataWithFilter.filtered];
+    let selectedCsvData = [] as string[][];
+    let selectedRows = [] as Cell[][];
+    selectedCheckbox.forEach((i) => {
+      const row = rows.find((row) => row.bugId.rowNum === i)!;
+      const arr = convertActiveProjectRowToArrayExcludeId(row);
+      selectedRows.push(arr);
+    });
+    if (!selectedRows.length) {
+      return;
+    }
+    let header = [] as string[];
+    selectedRows[0].forEach((c) => header.push(c.label || ""));
+    selectedCsvData.push(header);
+    selectedRows.forEach((row) => {
+      const rowData = [] as string[];
+      row.forEach((c) => rowData.push(c.value || ""));
+      selectedCsvData.push(rowData);
+    });
+    setCsvData(selectedCsvData);
+  };
   return (
     <div>
       <Card>
@@ -359,7 +385,7 @@ const Activeprojects = () => {
         )}
       </div>
 
-      <CardFooter className="flex flex-row justify-between">
+      <CardFooter className="flex flex-row justify-between mt-2">
         <div>
           <Button
             onClick={edit}
@@ -374,6 +400,11 @@ const Activeprojects = () => {
             disabled={!selectedCheckbox.length || !saveValues}
           >
             Save
+          </Button>
+          <Button className="bg-blue-100 mr-8" onClick={() => handleDownload()}>
+            <CSVLink filename="ActiveProjectData" data={csvData}>
+              <IoCloudDownloadOutline />
+            </CSVLink>
           </Button>
           <Addprojectrow rowNumber={dataWithFilter.data &&dataWithFilter.data.length || 0} />
         </div>

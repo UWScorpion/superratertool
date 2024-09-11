@@ -93,32 +93,74 @@ export function convertSuperRaterRowToArray(row: SuperRaterRow) {
   ];
 }
 
+export function convertSuperRaterRowToArrayExcludeId(row: SuperRaterRow) {
+  return [
+    row.superRaterName,
+    row.superRaterLDAP,
+    row.baseProject,
+    row.project,
+    row.currentTask,
+    row.assignedProject,
+    row.pod,
+    row.location,
+    row.globalLogicEmail,
+    row.googleEmail,
+    row.onboardingStatus,
+    row.highestLevelofEducation,
+    row.allAssociatedRoles,
+    row.productionRole,
+    row.vendorOnboardedDate,
+    row.productionReadyDate,
+    row.estDateofProdStart,
+    row.releasedfromOnboarding,
+    row.majorAreaofStudy,
+    row.technicalLanguageSkills,
+    row.notes,
+    row.prodLead,
+    row.prodLeadLdap,
+  ];
+}
 
 export function convertActiveProjectRowToArray(row: ActiveProjectRow) {
-    return [
-      row.id,
-      row.bugId,
-      row.project,
-      row.workflow,
-      row.tasksubtype,
-      row.workspace,
-      row.qType,
-      row.status,
-      row.startDate,
-      row.endDate,
-      row.reviewCompleted,
-      row.averageHandlingTime,
-    ];
-  }
+  return [
+    row.id,
+    row.bugId,
+    row.project,
+    row.workflow,
+    row.tasksubtype,
+    row.workspace,
+    row.qType,
+    row.status,
+    row.startDate,
+    row.endDate,
+    row.reviewCompleted,
+    row.averageHandlingTime,
+  ];
+}
 
-  export function getOptions(input:string[]){
-    input = input.filter(s=>s);
-    return Array.from(new Set(input)).map(s=>({value:s, label:s}));
-  }
+export function convertActiveProjectRowToArrayExcludeId(row: ActiveProjectRow) {
+  return [
+    row.bugId,
+    row.project,
+    row.workflow,
+    row.tasksubtype,
+    row.workspace,
+    row.qType,
+    row.status,
+    row.startDate,
+    row.endDate,
+    row.reviewCompleted,
+    row.averageHandlingTime,
+  ];
+}
 
-  export function getColumnFromRange(input: string){
-    if(!input){
-      return '';
-    }
+export function getOptions(input: string[]) {
+  input = input.filter((s) => s);
+  return Array.from(new Set(input)).map((s) => ({ value: s, label: s }));
+}
 
+export function getColumnFromRange(input: string) {
+  if (!input) {
+    return "";
   }
+}
