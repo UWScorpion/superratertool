@@ -22,7 +22,9 @@ import {
   TOP_FILTER_CONFIG,
   Toprosterfilter,
   ChangeHistory,
+  Cell,
 } from "../common/constants";
+import { CSVLink } from "react-csv";
 
 import { useEffect, useState } from "react";
 import {
@@ -30,8 +32,10 @@ import {
   getRowNumber,
   getOptions,
   formatDate,
+  convertSuperRaterRowToArrayExcludeId,
 } from "../common/utils";
 import loading from "../../public/loading.gif";
+import { IoCloudDownloadOutline } from "react-icons/io5";
 
 const Srroster = () => {
   const [dataWithFilter, setDataWithFilter] = useState({} as DataWithFilter);
@@ -40,6 +44,7 @@ const Srroster = () => {
   const [saveValues, setSaveValues] = useState(false);
   const [updates, setUpdates] = useState({} as Record);
   const [clearfilter, setClearfilter] = useState(false);
+  const [csvData, setCsvData] = useState([] as string[][]);
   const [toprosterfilterconfig, setToprosterfilterconfig] = useState([
     PROJECT_TAB_CONFIG[0],
     PROJECT_TAB_CONFIG[1],
@@ -486,6 +491,29 @@ const Srroster = () => {
     setDataWithFilter({ ...dataWithFilter, filtered: dataWithFilter.data });
     updatefilterconfig(dataWithFilter.data);
   };
+
+  const handleDownload = () => {
+    const rows = [...dataWithFilter.filtered];
+    let selectedCsvData = [] as string[][];
+    let selectedRows = [] as Cell[][];
+    selectedCheckbox.forEach((i) => {
+      const row = rows.find((row) => row.superRaterName.rowNum === i)!;
+      const arr = convertSuperRaterRowToArrayExcludeId(row);
+      selectedRows.push(arr);
+    });
+    if (!selectedRows.length) {
+      return;
+    }
+    let header = [] as string[];
+    selectedRows[0].forEach((c) => header.push(c.label || ""));
+    selectedCsvData.push(header);
+    selectedRows.forEach((row) => {
+      const rowData = [] as string[];
+      row.forEach((c) => rowData.push(c.value || ""));
+      selectedCsvData.push(rowData);
+    });
+    setCsvData(selectedCsvData);
+  };
   return (
     <div>
       <Card>
@@ -522,7 +550,7 @@ const Srroster = () => {
           <img className="w-32 mt-12 mb-12" src={loading.src} alt="loading" />
         )}
       </div>
-      <CardFooter className=" flex flex-row justify-between">
+      <CardFooter className=" flex flex-row justify-between mt-2">
         <div>
           <Button
             onClick={edit}
@@ -537,6 +565,11 @@ const Srroster = () => {
             disabled={!selectedCheckbox.length || !saveValues}
           >
             Save
+          </Button>
+          <Button className="bg-blue-100 mr-8" onClick={() => handleDownload()} disabled={!selectedCheckbox.length}>
+            <CSVLink filename="RosterData" data={csvData}>
+              <IoCloudDownloadOutline />
+            </CSVLink>
           </Button>
           <Addrow
             rowNumber={(dataWithFilter.data && dataWithFilter.data.length) || 0}
