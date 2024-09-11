@@ -401,7 +401,7 @@ const Activeprojects = () => {
           >
             Save
           </Button>
-          <Button className="bg-blue-100 mr-8" onClick={() => handleDownload()}>
+          <Button className="bg-blue-100 mr-8" onClick={() => handleDownload()} disabled={!selectedCheckbox.length}>
             <CSVLink filename="ActiveProjectData" data={csvData}>
               <IoCloudDownloadOutline />
             </CSVLink>
