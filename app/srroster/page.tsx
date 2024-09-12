@@ -92,7 +92,6 @@ const Srroster = () => {
   const convertToChangeHistory = (updates: Record) => {
     const changes = {} as ChangeHistory;
     Object.values(updates).forEach((update) => {
-      console.log("update", update.column?.rowNum);
       if (update.column && update.column.rowNum) {
         if (changes[update.column?.rowNum]) {
           const message = `Row: ${update.column.rowNum} Field: ${

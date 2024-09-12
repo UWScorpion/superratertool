@@ -64,7 +64,6 @@ const Activeprojects = () => {
   const convertToChangeHistory = (updates: Record) => {
     const changes = {} as ChangeHistory;
     Object.values(updates).forEach((update) => {
-      console.log("update", update.column?.rowNum);
       if (update.column && update.column.rowNum) {
         if (changes[update.column?.rowNum]) {
           const message = `Row: ${update.column.rowNum-6} Field: ${
@@ -84,7 +83,6 @@ const Activeprojects = () => {
   };
 
   const writeToChangeHistory = (changes: ChangeHistory) => {
-    console.log("changes", changes);
     Object.entries(changes).forEach(([key, value]) => {
       const writedata = async () => {
         const req = new Request(`/api/roster?range=ProjectChange!B${key}`);

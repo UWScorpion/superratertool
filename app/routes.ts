@@ -4,5 +4,7 @@ export const AUTH_ROUTES = ["/login"];
 
 export const PROTECTED_ROUTES = [
 	"/",
+	"/srroster",
+	"/activeprojects"
 	// your other protected routes
 ];
