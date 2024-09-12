@@ -23,9 +23,7 @@ export default async function Home() {
           <Image
             src={session.user.image!}
             alt="profile picture"
-            width={30}
-            height={30}
-            className="object-cover ml-5 rounded-full"
+            className="object-cover w-10 h-10 ml-5 rounded-full"
           />
           <form
             action={async () => {
