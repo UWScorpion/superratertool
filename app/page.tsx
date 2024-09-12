@@ -10,10 +10,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { redirect } from 'next/navigation';
 
 export default async function Home() {
   const session = await auth();
-  if (!session) return notFound();
+  if (!session) redirect('/login');
   return (
     <div>
       {session.user && (
